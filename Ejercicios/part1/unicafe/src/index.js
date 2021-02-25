@@ -22,6 +22,40 @@ const TotalComments = ({allComments}) => {
   return <p>All comments: {allComments}</p>
 };
 
+const Average = ({good, neutral, bad}) => {
+  const total = good + neutral + bad;
+  if (total === 0){
+    return <p>Average score: {total}</p>
+  }
+  else {
+    return <p>Average score: {(good - bad) / total}</p>
+  }
+};
+
+const Positive = ({good, neutral, bad}) => {
+  const total = good + neutral + bad;
+  if (total === 0){
+    return <p>Positive percentage: {total}</p>
+  }
+  else {
+    return <p>Positive percentage: {good / (total / 100)}%</p>
+  }
+}
+
+const Statistics = ({good, neutral, bad}) => {
+  return (
+  <div>
+    <h1>Statistics</h1>
+      <GoodComments good={good}></GoodComments>
+      <NeutralComments neutral={neutral}></NeutralComments>
+      <BadComments bad={bad}></BadComments>
+      <TotalComments allComments={good + neutral + bad}></TotalComments>
+      <Average good={good} neutral={neutral} bad={bad}></Average>
+      <Positive good={good} neutral={neutral} bad={bad}></Positive>
+  </div>
+  )
+}
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
@@ -43,39 +77,13 @@ const App = () => {
     setBad((prevBad) => prevBad + 1);
   };
 
-  const Average = ({good, neutral, bad}) => {
-    const total = good + neutral + bad;
-    if (total === 0){
-      return <p>Average score: {total}</p>
-    }
-    else {
-      return <p>Average score: {(good - bad) / total}</p>
-    }
-  };
-
-  const Positive = ({good, neutral, bad}) => {
-    const total = good + neutral + bad;
-    if (total === 0){
-      return <p>Positive percentage: {total}</p>
-    }
-    else {
-      return <p>Positive percentage: {good / (total / 100)}%</p>
-    }
-  }
-
   return (
     <div>
       <h1>Give Feedback</h1>
       <Button onClick={handleGoodClick} text="good"></Button>
       <Button onClick={handleNeutralClick} text="neutral"></Button>
       <Button onClick={handleBadClick} text="bad"></Button>
-      <h1>Statistics</h1>
-      <GoodComments good={good}></GoodComments>
-      <NeutralComments neutral={neutral}></NeutralComments>
-      <BadComments bad={bad}></BadComments>
-      <TotalComments allComments={good + neutral + bad}></TotalComments>
-      <Average good={good} neutral={neutral} bad={bad}></Average>
-      <Positive good={good} neutral={neutral} bad={bad}></Positive>
+      <Statistics good={good} neutral={neutral} bad={bad}></Statistics>
       
     </div>
   )
