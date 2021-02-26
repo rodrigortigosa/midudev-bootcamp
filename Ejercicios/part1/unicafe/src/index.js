@@ -1,60 +1,58 @@
-import ReactDOM from 'react-dom'
-import React, { useState } from 'react'
+import ReactDOM from 'react-dom';
+import React, { useState } from 'react';
 
 const Button = ({ onClick, text }) => {
   return <button onClick={onClick}>{text}</button>;
 };
 
-const GoodComments = ({good}) => {
-  return <p>Good comments: {good}</p>
-};
-
-const NeutralComments = ({neutral}) => {
-  return <p>Neutral comments: {neutral}</p>
-};
-
-const BadComments = ({bad}) => {
-  return <p>Bad comments: {bad}</p>
-};
-
-
-const TotalComments = ({allComments}) => {
-  return <p>All comments: {allComments}</p>
-};
-
-const Average = ({good, neutral, bad}) => {
-  const total = good + neutral + bad;
-  if (total === 0){
-    return <p>Average score: {total}</p>
+const Statistic = ({ text, value }) => {
+  if (text === "good") {
+    return <p>Good comments: {value}</p>;
   }
-  else {
-    return <p>Average score: {(good - bad) / total}</p>
+  else if (text === "neutral") {
+    return <p>Neutral comments: {value}</p>;
+  }
+  else if (text === "bad") {
+    return <p>Bad comments: {value}</p>
+  }
+  else if (text === "all") {
+    return <p>All comments: {value}</p>;
+  }
+  else if (text === "average") {
+    const [good, neutral, bad] = value;
+    const total = good + neutral + bad;
+    if (total === 0){
+      return <p>Average score: {total}</p>;
+    }
+    else {
+      return <p>Average score: {(good - bad) / total}</p>;
+    }
+  }
+  else if (text === "positive") {
+    const [good, neutral, bad] = value;
+    const total = good + neutral + bad;
+    if (total === 0) {
+      return <p>Positive percentage: {total}</p>;
+    }
+    else {
+      return <p>Positive percentage: {good / (total / 100)}%</p>;
+    }
   }
 };
 
-const Positive = ({good, neutral, bad}) => {
-  const total = good + neutral + bad;
-  if (total === 0) {
-    return <p>Positive percentage: {total}</p>
-  }
-  else {
-    return <p>Positive percentage: {good / (total / 100)}%</p>
-  }
-}
-
-const Statistics = ({good, neutral, bad}) => {
+const Statistics = ({ good, neutral, bad }) => {
   if (good !== 0 || neutral !== 0 || bad !== 0) {
     return (
     <div>
       <h1>Statistics</h1>
-      <GoodComments good={good}></GoodComments>
-      <NeutralComments neutral={neutral}></NeutralComments>
-      <BadComments bad={bad}></BadComments>
-      <TotalComments allComments={good + neutral + bad}></TotalComments>
-      <Average good={good} neutral={neutral} bad={bad}></Average>
-      <Positive good={good} neutral={neutral} bad={bad}></Positive>
+      <Statistic text="good" value={good}></Statistic>
+      <Statistic text="neutral" value={neutral}></Statistic>
+      <Statistic text="bad" value={bad}></Statistic>
+      <Statistic text="all" value={good + neutral + bad}></Statistic>
+      <Statistic text="average" value={[good, neutral, bad]}></Statistic>
+      <Statistic text="positive" value={[good, neutral, bad]}></Statistic>
     </div>
-    )
+    );
   }
   else {
     return (
@@ -62,15 +60,15 @@ const Statistics = ({good, neutral, bad}) => {
         <h1>Statistics</h1>
         <p>No feedback given</p>
       </div>
-    )
+    );
   }
-}
+};
 
 const App = () => {
   // save clicks of each button to its own state
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
   const handleGoodClick = () => {
     console.log("good click");
@@ -96,9 +94,9 @@ const App = () => {
       <Statistics good={good} neutral={neutral} bad={bad}></Statistics>
       
     </div>
-  )
-}
+  );
+};
 
 ReactDOM.render(<App />, 
   document.getElementById('root')
-)
+);
