@@ -7,35 +7,37 @@ const Button = ({ onClick, text }) => {
 
 const Statistic = ({ text, value }) => {
   if (text === "good") {
-    return <p>Good comments: {value}</p>;
+    return value;
   }
   else if (text === "neutral") {
-    return <p>Neutral comments: {value}</p>;
+    return value;
   }
   else if (text === "bad") {
-    return <p>Bad comments: {value}</p>
+    return value;
   }
   else if (text === "all") {
-    return <p>All comments: {value}</p>;
+    return value;
   }
   else if (text === "average") {
     const [good, neutral, bad] = value;
     const total = good + neutral + bad;
     if (total === 0){
-      return <p>Average score: {total}</p>;
+      return total;
     }
     else {
-      return <p>Average score: {(good - bad) / total}</p>;
+      const result = (good - bad) / total;
+      return result.toFixed(1);
     }
   }
   else if (text === "positive") {
     const [good, neutral, bad] = value;
     const total = good + neutral + bad;
     if (total === 0) {
-      return <p>Positive percentage: {total}</p>;
+      return total;
     }
     else {
-      return <p>Positive percentage: {good / (total / 100)}%</p>;
+      const result = good / (total / 100);
+      return result.toFixed(1) + "%";
     }
   }
 };
@@ -45,12 +47,34 @@ const Statistics = ({ good, neutral, bad }) => {
     return (
     <div>
       <h1>Statistics</h1>
-      <Statistic text="good" value={good}></Statistic>
-      <Statistic text="neutral" value={neutral}></Statistic>
-      <Statistic text="bad" value={bad}></Statistic>
-      <Statistic text="all" value={good + neutral + bad}></Statistic>
-      <Statistic text="average" value={[good, neutral, bad]}></Statistic>
-      <Statistic text="positive" value={[good, neutral, bad]}></Statistic>
+      <table>
+        <tbody>
+          <tr>
+            <td>Good comments:</td>
+            <td><Statistic text="good" value={good}></Statistic></td>
+          </tr>
+          <tr>
+            <td>Neutral comments:</td>
+            <td><Statistic text="neutral" value={neutral}></Statistic></td>
+            </tr>
+          <tr>
+            <td>Bad comments:</td>
+            <td><Statistic text="bad" value={bad}></Statistic></td>
+          </tr>
+          <tr>
+            <td>All comments:</td>
+            <td><Statistic text="all" value={good + neutral + bad}></Statistic></td>
+            </tr>
+          <tr>
+            <td>Average score:</td>
+            <td><Statistic text="average" value={[good, neutral, bad]}></Statistic></td>
+          </tr>
+          <tr>
+            <td>Positive percentage:</td>
+            <td><Statistic text="positive" value={[good, neutral, bad]}></Statistic></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     );
   }
