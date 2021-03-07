@@ -26,24 +26,31 @@ const Content = ({parts}) => {
   );
 };
 
-const Total = ({parts}) => {
+/*const Total = ({parts}) => {
   let total = 0;
   parts.forEach(part => {
     total = total + part.exercises;
   });
  
   return <p>Total number of exercises: {total}</p>;
-}
+};*/
+
+const TotalExercises = ({parts}) => {
+  const total = parts.reduce((a, b) => ({ exercises: a.exercises + b.exercises }));
+  console.log('total exercises:', total.exercises);
+
+  return <p>Total number of exercises: {total.exercises}</p>;
+};
 
 const Course = ({course}) => {
   return (
     <div>
       <Header course={course.name}></Header>
       <Content parts={course.parts}></Content>
-      <Total parts={course.parts}></Total>
+      <TotalExercises parts={course.parts}></TotalExercises>
     </div>
   );
-}
+};
 
 const App = () => {
   const courses = [
