@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 
 const App = () => {
-  const [ persons, setPersons ] = useState([{ name: 'Arto Hellas', number: '040-123456' }]); 
+  const [ persons, setPersons ] = useState([ 
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
+  ]); 
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
+  const [ newFilterName, setNewFilterName ] = useState('');
 
   const handleNameChange = (event) => {
     console.log('change', event.target.value);
@@ -14,6 +23,11 @@ const App = () => {
     console.log('change', event.target.value);
     setNewNumber(event.target.value);
   };
+
+  const handleFilterNameChange = (event) => {
+    console.log('change', event.target.value);
+    setNewFilterName(event.target.value);
+  }
   
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -35,31 +49,24 @@ const App = () => {
     }
   };
 
+  const isFilterVoid = newFilterName.length === 0 ? true : false;
+
   return (
     <>
       <h2>Phonebook</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input onChange={handleNameChange} value={newName} required/>
-        </div>
-        <div>
-          number: <input onChange={handleNumberChange} value={newNumber} required />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <div>
-        <ul>
-          {persons.map(person => (
-           <li key={person.name}>
-            <p>{person.name}</p>
-            <p>{person.number}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
+    
+      <Filter handleChange={handleFilterNameChange}></Filter>
+
+      <h3>Add a new</h3>
+
+      <PersonForm onSubmit={handleSubmit} onNameChange={handleNameChange} 
+        onNumberChange={handleNumberChange} valueName={newName} 
+        valueNumber={newNumber}>
+      </PersonForm>
+
+      <h3>Numbers</h3>
+
+      <Persons isFilterVoid={isFilterVoid} persons={persons} filterName={newFilterName}></Persons>
     </>
   );
 };
