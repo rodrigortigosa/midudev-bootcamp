@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import {getAll as getAllPersons, create as createPerson} from './services/persons';
 
 const App = () => {
-  const [ persons, setPersons ] = useState([ 
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ]); 
+  const [ persons, setPersons ] = useState([]);
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
   const [ newFilterName, setNewFilterName ] = useState('');
+
+  useEffect(() => {
+    getAllPersons().then((persons) => {
+      setPersons(prevPersons => prevPersons.concat(persons));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }, []);
 
   const handleNameChange = (event) => {
     console.log('change', event.target.value);
@@ -43,7 +48,14 @@ const App = () => {
       alert(`${newName} is already added to phonebook`);
     }
     else {
-      setPersons(persons.concat(personToAddToState));
+
+      createPerson(personToAddToState)
+      .then((person) => {
+        setPersons((prevPersons) => prevPersons.concat(person));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
       setNewName('');
       setNewNumber('');
     }
