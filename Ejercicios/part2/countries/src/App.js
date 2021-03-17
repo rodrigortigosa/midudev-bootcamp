@@ -8,8 +8,8 @@ const App = () => {
   const [ newFilterName, setNewFilterName ] = useState('');
 
   useEffect(() => {
-    getAllCountries().then((countries) => {
-      setCountries(prevCountries => prevCountries.concat(countries));
+    getAllCountries().then((initialCountries) => {
+      setCountries(prevCountries => prevCountries.concat(initialCountries));
     })
     .catch((error) => {
       console.log(error);
